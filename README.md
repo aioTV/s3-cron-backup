@@ -17,3 +17,21 @@ Example command for docker run:
 ```
 docker run -d -e S3_BUCKET_URL="s3://foo/bar" -e BACKUP_DIR=/jenkins_home -v "$(pwd)/jenkins_home:/jenkins_home:ro" aiotv/s3-cron-backup
 ```
+
+Example docker-compose.yml service config:
+```
+---
+version: '2'
+
+services:
+  backup:
+    image: aiotv/s3-cron-backup
+    environment:
+      - CRON_SCHEDULE=30 23 * * 0
+      - S3_BUCKET_URL=s3://thebackupbucket
+      - BACKUP_DIR=/jenkins_home
+      - BACKUP_NAME=jenkins_home
+    volumes:
+      - "./jenkins_home:/jenkins_home:ro"
+    restart: always
+```
